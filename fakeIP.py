@@ -27,6 +27,9 @@ from burp import IIntruderPayloadGeneratorFactory
 from burp import IIntruderPayloadGenerator
 from java.awt import GridBagLayout, GridBagConstraints
 from javax.swing import JLabel, JTextField, JOptionPane, JTabbedPane, JPanel, JButton
+from struct import pack
+from socket import inet_ntoa
+from random import randint
 
 
 class BurpExtender(IBurpExtender, IHttpListener, IContextMenuFactory, IIntruderPayloadGeneratorFactory):
@@ -85,29 +88,29 @@ class BurpExtender(IBurpExtender, IHttpListener, IContextMenuFactory, IIntruderP
             requestInfo = self._helpers.analyzeRequest(currentRequest)  # 该部分实际获取到的是全部的Http请求包
             self.headers = list(requestInfo.getHeaders())
 
-            self.headers.append(u'X-Forwarded-For: ' + ip)
-            self.headers.append(u'X-Forwarded: ' + ip)
-            self.headers.append(u'Forwarded-For: ' + ip)
-            self.headers.append(u'Forwarded: ' + ip)
-            self.headers.append(u'X-Forwarded-Host: ' + ip)
-            self.headers.append(u'X-remote-IP: ' + ip)
-            self.headers.append(u'X-remote-addr: ' + ip)
-            self.headers.append(u'True-Client-IP: ' + ip)
-            self.headers.append(u'X-Client-IP: ' + ip)
-            self.headers.append(u'Client-IP: ' + ip)
-            self.headers.append(u'X-Real-IP: ' + ip)
-            self.headers.append(u'Ali-CDN-Real-IP: ' + ip)
-            self.headers.append(u'Cdn-Src-Ip: ' + ip)
-            self.headers.append(u'Cdn-Real-Ip: ' + ip)
-            self.headers.append(u'CF-Connecting-IP: ' + ip)
-            self.headers.append(u'X-Cluster-Client-IP: ' + ip)
-            self.headers.append(u'WL-Proxy-Client-IP: ' + ip)
-            self.headers.append(u'Proxy-Client-IP: ' + ip)
-            self.headers.append(u'Fastly-Client-Ip: ' + ip)
-            self.headers.append(u'True-Client-Ip: ' + ip)
-            self.headers.append(u'X-Originating-IP: ' + ip)
-            self.headers.append(u'X-Host: ' + ip)
-            self.headers.append(u'X-Custom-IP-Authorization: ' + ip)
+            self.headers.append(u'X-Forwarded-For: ' + getRandomIP())
+            self.headers.append(u'X-Forwarded: ' + getRandomIP())
+            self.headers.append(u'Forwarded-For: ' + getRandomIP())
+            self.headers.append(u'Forwarded: ' + getRandomIP())
+            self.headers.append(u'X-Forwarded-Host: ' + getRandomIP())
+            self.headers.append(u'X-remote-IP: ' + getRandomIP())
+            self.headers.append(u'X-remote-addr: ' + getRandomIP())
+            self.headers.append(u'True-Client-IP: ' + getRandomIP())
+            self.headers.append(u'X-Client-IP: ' + getRandomIP())
+            self.headers.append(u'Client-IP: ' + getRandomIP())
+            self.headers.append(u'X-Real-IP: ' + getRandomIP())
+            self.headers.append(u'Ali-CDN-Real-IP: ' + getRandomIP())
+            self.headers.append(u'Cdn-Src-Ip: ' + getRandomIP())
+            self.headers.append(u'Cdn-Real-Ip: ' + getRandomIP())
+            self.headers.append(u'CF-Connecting-IP: ' + getRandomIP())
+            self.headers.append(u'X-Cluster-Client-IP: ' + getRandomIP())
+            self.headers.append(u'WL-Proxy-Client-IP: ' + getRandomIP())
+            self.headers.append(u'Proxy-Client-IP: ' + getRandomIP())
+            self.headers.append(u'Fastly-Client-Ip: ' + getRandomIP())
+            self.headers.append(u'True-Client-Ip: ' + getRandomIP())
+            self.headers.append(u'X-Originating-IP: ' + getRandomIP())
+            self.headers.append(u'X-Host: ' + getRandomIP())
+            self.headers.append(u'X-Custom-IP-Authorization: ' + getRandomIP())
 
         
 
@@ -175,3 +178,7 @@ class fakeIpGenerator(IIntruderPayloadGenerator):
         payload = a + "." + b + "." + c + "." + d
 
         return payload
+    
+   # 生成随机IP
+   def getRandomIP():
+        return inet_ntoa(pack('I',randint(1,0xffffffff)))
