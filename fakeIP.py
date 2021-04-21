@@ -158,11 +158,4 @@ class fakeIpGenerator(IIntruderPayloadGenerator):
 
     # 接受原始的HTTP负载，current_payload是数组，
     def getNextPayload(self, current_payload):
-        a = str(int(random.uniform(1, 255)))
-        b = str(int(random.uniform(1, 255)))
-        c = str(int(random.uniform(1, 255)))
-        d = str(int(random.uniform(1, 255)))
-
-        payload = a + "." + b + "." + c + "." + d
-
-        return payload
+        return inet_ntoa(pack('I',randint(1,0xffffffff)))
